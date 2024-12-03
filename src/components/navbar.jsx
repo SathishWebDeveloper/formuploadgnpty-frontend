@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { Breadcrumb, Layout, Menu, theme, Switch } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
+import { Context } from "../routes/routes";
 
 const { Header, Content, Footer } = Layout;
 
 const Navbar = () => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
+  const userData = useContext(Context);
+  console.log("user", userData);
   const data = ["Upload", "Generate", "View", "Gallery"];
   const items = new Array(data.length).fill(null).map((_, index) => ({
     key: String(index + 1),
@@ -23,8 +26,10 @@ const Navbar = () => {
   };
 
   const handleChange = (key) => {
-    const navigateData = items.find((elm) => elm.key === key).label.toLowerCase();
-    navigate(`/${navigateData}`)
+    const navigateData = items
+      .find((elm) => elm.key === key)
+      .label.toLowerCase();
+    navigate(`/${navigateData}`);
   };
   return (
     <Layout>
@@ -38,7 +43,7 @@ const Navbar = () => {
           alignItems: "center",
         }}
       >
-        <div className="demo-logo" />
+        <div className="demo-logo" ></div>
         <Menu
           theme="dark"
           mode="horizontal"
@@ -49,11 +54,14 @@ const Navbar = () => {
             minWidth: 0,
           }}
           onClick={({ key }) => {
-            handleChange(key)
+            handleChange(key);
             // setItemName(items.find((elm) => elm.key === key).label);
-        }}
-        //   onClick={(e) => handleChange(e)}
+          }}
+          //   onClick={(e) => handleChange(e)}
         />
+        <div style={{ color: "#fff" , display:"flex" }}> 
+          {/* <div>{userData.user.name}</div> */}
+           <div>{userData.user.email} &nbsp;</div> </div>
         <div style={{ color: "#fff" }}>
           {" "}
           dark <Switch defaultChecked onChange={onChange} /> light{" "}
@@ -63,7 +71,6 @@ const Navbar = () => {
         style={{
           padding: "10px 48px",
           minHeight: "500px",
-          
         }}
       >
         <Outlet />
