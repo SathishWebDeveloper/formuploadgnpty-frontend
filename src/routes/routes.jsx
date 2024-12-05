@@ -6,10 +6,11 @@ export const Context = createContext();
 
 const AllRoutes = () => {
   const [auth, setAuth] = useState(false);
-  const [user,setUser] = useState({name : "" , email : ""}); 
+  const [user,setUser] = useState({name : "" , email : ""});
+  const [accessToken , setaccessToken] = useState("") 
 
   return (
-    <Context.Provider value={{ auth, setAuth ,user , setUser }}>
+    <Context.Provider value={{ auth, setAuth ,user , setUser , accessToken ,setaccessToken}}>
       {auth ? <PrivatePage /> : <PublicPage />}
     </Context.Provider>
   );

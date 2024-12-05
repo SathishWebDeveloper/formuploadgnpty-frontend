@@ -38,6 +38,7 @@ function Register() {
   const navigate = useNavigate();
   const [response, setResponse] = useState("");
   const handleLoginSuccess = async (credentialResponse) => {
+    setResponse((prev) => "");
     const idToken = credentialResponse.credential; // Token returned from Google
     console.log("idToken", idToken);
     try {
@@ -56,6 +57,7 @@ function Register() {
         name: USER_CREDENTIAL.name,
         email: USER_CREDENTIAL.email,
       });
+      login.setaccessToken(response.data.accessToken)
       setResponse(`${USER_CREDENTIAL.email} login is successfull`);
       setTimeout(() => navigate("/upload"), 2000);
       //   navigate("/upload");
