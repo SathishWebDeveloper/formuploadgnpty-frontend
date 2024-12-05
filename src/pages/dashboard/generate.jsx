@@ -1,31 +1,74 @@
-// import React from "react";
-
-// const GeneratePage = () => {
-//     return (
-//         <div>
-//             Generate 
-
-//         </div>
-      
-//     )
-// }
-// export default GeneratePage;
-
-import React from "react";
+import React, { useContext } from "react";
 import { Form, Input, Select, Button, message } from "antd";
+import axios from "axios";
+import { Context } from "../../routes/routes";
+import jsPDF from "jspdf"; //pdf
+import * as XLSX from "xlsx"; //excel
 
 const { Option } = Select;
 
 const GeneratePage = () => {
   const [form] = Form.useForm();
+  const propData = useContext(Context);
+
+  const fileMaker = (fileData) => {
+    console.log();
+    if (fileData.fileFormat === "PDF") {
+      // Generate PDF file
+      const doc = new jsPDF();
+      doc.text("Form Data", 20, 10);
+      let y = 20;
+      Object.entries(fileData).forEach(([key, value]) => {
+        doc.text(`${key}: ${value}`, 20, y);
+        y += 10;
+      });
+      doc.save(`${name}_form.pdf`);
+    } else if (fileData.fileFormat === "Excel") {
+      // Generate Excel file
+      const ws = XLSX.utils.json_to_sheet([fileData]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Form Data");
+      XLSX.writeFile(wb, `${name}_form.xlsx`);
+    }
+  };
+
+  const handleSubmit = async (values) => {
+    const token = propData?.accessToken;
+    console.log("test", token, values); // Logging for debugging
+
+    const url = "http://localhost:8000/api/generatefiles/upload"; // Replace with your API endpoint
+
+    try {
+      // Sending the object directly
+      const response = await axios.post(url, values, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Attach the token for authentication
+          "Content-Type": "application/json", // Ensure the content type is JSON
+        },
+      });
+
+      // Success response
+      console.log("Response Data:", response.data);
+      fileMaker(values); // Call your fileMaker function with values
+    } catch (error) {
+      // Error handling
+      console.error("Error:", error);
+
+      // Optional: log more details about the error
+      if (error.response) {
+        console.error("Error Response:", error.response.data);
+      }
+    }
+  };
 
   // Handle form submission
   const onFinish = (values) => {
     console.log("Form Values:", values);
 
+    handleSubmit(values);
     // Display entered details
     message.success("Form submitted successfully!");
-    form.resetFields();
+    // form.resetFields();
     console.log("Formatted Output:", JSON.stringify(values, null, 2));
   };
 
@@ -38,16 +81,14 @@ const GeneratePage = () => {
         onFinish={onFinish}
         initialValues={{
           location: "New York", // Default value for location
-          fileFormat: "PDF",   // Default value for file format
+          fileFormat: "PDF", // Default value for file format
         }}
       >
         {/* Name Field */}
         <Form.Item
           label="Name"
           name="name"
-          rules={[
-            { required: true, message: "Please enter your name" },
-          ]}
+          rules={[{ required: true, message: "Please enter your name" }]}
         >
           <Input placeholder="Enter your name" />
         </Form.Item>
@@ -68,9 +109,7 @@ const GeneratePage = () => {
         <Form.Item
           label="Event Details"
           name="eventDetails"
-          rules={[
-            { required: true, message: "Please provide event details" },
-          ]}
+          rules={[{ required: true, message: "Please provide event details" }]}
         >
           <Input.TextArea rows={4} placeholder="Describe the event" />
         </Form.Item>
@@ -79,9 +118,7 @@ const GeneratePage = () => {
         <Form.Item
           label="Location"
           name="location"
-          rules={[
-            { required: true, message: "Please select a location" },
-          ]}
+          rules={[{ required: true, message: "Please select a location" }]}
         >
           <Select placeholder="Select a location">
             <Option value="New York">New York</Option>
@@ -95,9 +132,7 @@ const GeneratePage = () => {
         <Form.Item
           label="File Format"
           name="fileFormat"
-          rules={[
-            { required: true, message: "Please select a file format" },
-          ]}
+          rules={[{ required: true, message: "Please select a file format" }]}
         >
           <Select placeholder="Select a file format">
             <Option value="PDF">PDF</Option>

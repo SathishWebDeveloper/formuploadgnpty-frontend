@@ -37,6 +37,7 @@ function Register() {
   const login = useContext(Context);
   const navigate = useNavigate();
   const [response, setResponse] = useState("");
+  
   const handleLoginSuccess = async (credentialResponse) => {
     setResponse((prev) => "");
     const idToken = credentialResponse.credential; // Token returned from Google
