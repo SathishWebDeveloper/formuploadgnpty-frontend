@@ -1,8 +1,10 @@
 import React, { useContext } from "react";
 
-import { Breadcrumb, Layout, Menu, theme, Switch } from "antd";
+import { Breadcrumb, Layout, Menu, theme, Switch ,Button } from "antd";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Context } from "../routes/routes";
+import { googleLogout } from '@react-oauth/google';
+
 
 const { Header, Content, Footer } = Layout;
 
@@ -31,6 +33,13 @@ const Navbar = () => {
       .label.toLowerCase();
     navigate(`/${navigateData}`);
   };
+
+  const myHandleLogout = () => {
+    googleLogout();
+    localStorage.removeItem("accessToken");
+    userData.setaccessToken("");
+    navigate("/")
+  }
   return (
     <Layout>
       <Header
@@ -66,6 +75,7 @@ const Navbar = () => {
           {" "}
           dark <Switch defaultChecked onChange={onChange} /> light{" "}
         </div>
+        <div>  <Button type="primary" danger onClick={()=> myHandleLogout()}> Log Out </Button> </div>
       </Header>
       <Content
         style={{

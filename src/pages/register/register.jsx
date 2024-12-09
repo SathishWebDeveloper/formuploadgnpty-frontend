@@ -37,7 +37,7 @@ function Register() {
   const login = useContext(Context);
   const navigate = useNavigate();
   const [response, setResponse] = useState("");
-  
+
   const handleLoginSuccess = async (credentialResponse) => {
     setResponse((prev) => "");
     const idToken = credentialResponse.credential; // Token returned from Google
@@ -58,7 +58,8 @@ function Register() {
         name: USER_CREDENTIAL.name,
         email: USER_CREDENTIAL.email,
       });
-      login.setaccessToken(response.data.accessToken)
+      login.setaccessToken(response.data.accessToken);
+      localStorage.setItem("accessToken", response.data.accessToken);
       setResponse(`${USER_CREDENTIAL.email} login is successfull`);
       setTimeout(() => navigate("/upload"), 2000);
       //   navigate("/upload");
@@ -82,15 +83,19 @@ function Register() {
     <div>
       <GoogleOAuthProvider clientId="418507945684-b9mc07dbfoeimvg6qa62bnobfo39op93.apps.googleusercontent.com">
         <h1>Google Sign-In Example</h1>
-        <div style={{  display : "flex" , justifyContent : "center" , alignItems: "center"}}>
-            <div style={{ width :"50%"}}>
-
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ width: "50%" }}>
             <GoogleLogin
-            onSuccess={handleLoginSuccess}
-            onError={handleLoginError}
-          />
-            </div>
-
+              onSuccess={handleLoginSuccess}
+              onError={handleLoginError}
+            />
+          </div>
         </div>
       </GoogleOAuthProvider>
       <div>{response && response}</div>

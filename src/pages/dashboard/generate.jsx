@@ -10,6 +10,9 @@ const { Option } = Select;
 const GeneratePage = () => {
   const [form] = Form.useForm();
   const propData = useContext(Context);
+  const authkey = localStorage.getItem("accessToken") || "" ;
+
+  const token = propData?.accessToken || authkey;
 
   const fileMaker = (fileData) => {
     console.log();
@@ -33,7 +36,7 @@ const GeneratePage = () => {
   };
 
   const handleSubmit = async (values) => {
-    const token = propData?.accessToken;
+    // const token = propData?.accessToken;
     console.log("test", token, values); // Logging for debugging
 
     const url = "http://localhost:8000/api/generatefiles/upload"; // Replace with your API endpoint
