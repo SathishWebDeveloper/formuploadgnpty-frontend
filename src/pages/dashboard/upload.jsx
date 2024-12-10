@@ -77,27 +77,27 @@ const UploadPage = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("res", response.data);
+      // console.log("res", response.data);
       setFiles(response.data); // Store data in state
     } catch (error) {
-      console.error("Error fetching files:", error);
+      // console.error("Error fetching files:", error);
     } finally {
       setLoading(false); // Remove loader
     }
   };
 
   const generatedfetchFiles = async () => {
-    console.log("res123",propData )
+    // console.log("res123",propData )
     try {
       const response = await axios.get("http://localhost:8000/api/generatefiles/show", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("res123", response);
+      // console.log("res123", response);
       setSelfFiles(response.data); // Store data in state
     } catch (error) {
-      console.error("Error fetching files:", error);
+      // console.error("Error fetching files:", error);
     } finally {
       setLoading(false); // Remove loader
     }
@@ -191,7 +191,7 @@ const UploadPage = () => {
           }
       );
       
-      console.log("response",response);
+      // console.log("response",response);
 
       if(record?.format === "PDF"){
                   // Create a Blob from the response data

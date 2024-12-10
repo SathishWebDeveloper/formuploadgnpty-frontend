@@ -15,7 +15,7 @@ const GeneratePage = () => {
   const token = propData?.accessToken || authkey;
 
   const fileMaker = (fileData) => {
-    console.log();
+    // console.log();
     if (fileData.fileFormat === "PDF") {
       // Generate PDF file
       const doc = new jsPDF();
@@ -51,7 +51,7 @@ const GeneratePage = () => {
       });
 
       // Success response
-      console.log("Response Data:", response.data);
+      // console.log("Response Data:", response.data);
       fileMaker(values); // Call your fileMaker function with values
     } catch (error) {
       // Error handling
@@ -66,13 +66,13 @@ const GeneratePage = () => {
 
   // Handle form submission
   const onFinish = (values) => {
-    console.log("Form Values:", values);
+    // console.log("Form Values:", values);
 
     handleSubmit(values);
     // Display entered details
     message.success("Form submitted successfully!");
     // form.resetFields();
-    console.log("Formatted Output:", JSON.stringify(values, null, 2));
+    // console.log("Formatted Output:", JSON.stringify(values, null, 2));
   };
 
   return (
@@ -125,9 +125,10 @@ const GeneratePage = () => {
         >
           <Select placeholder="Select a location">
             <Option value="New York">New York</Option>
-            <Option value="San Francisco">San Francisco</Option>
-            <Option value="Los Angeles">Los Angeles</Option>
-            <Option value="Chicago">Chicago</Option>
+            <Option value="Chennai">Chennai</Option>
+            <Option value="Coimbatore">Coimbatore</Option>
+            <Option value="New Delhi"> Delhi</Option>
+            <Option value="Colombo">Colombo</Option>
           </Select>
         </Form.Item>
 
