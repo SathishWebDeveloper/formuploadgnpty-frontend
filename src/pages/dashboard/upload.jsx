@@ -156,8 +156,24 @@ const UploadPage = () => {
     document.body.removeChild(link);
   };
 
-  const handleShare = (fileId) => {
-    // Logic to share the file
+
+  // share pdf 
+  const handleShare = async (fileId) => {
+    const url = "http://localhost:8000/api/files/sentmail"; // Replace with your API endpoint
+    const fieldID = {fileId}
+    try {
+      const response = await axios.post(url, fieldID, {
+        headers: {
+          Authorization: `Bearer ${token}`, // Attach the token for authentication
+          "Content-Type": "application/json", // Ensure the content type is JSON
+        },
+      });
+      console.log("res", response)
+
+    } catch (error) {
+      // Error handling
+      console.error("Error:", error);
+    }
     console.log(`Share file with ID: ${fileId}`);
   };
 
@@ -291,7 +307,27 @@ const UploadPage = () => {
   //     console.error("Error downloading the file:", error);
   //   }
   // };
+  
 
+    // share pdf 
+    const handleShareGenerateMail = async (fileId) => {
+      const url = "http://localhost:8000/api/generatefiles/sendgeneratefilemail"; 
+      const fieldID = {fileId}
+      try {
+        const response = await axios.post(url, fieldID, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Attach the token for authentication
+            "Content-Type": "application/json", // Ensure the content type is JSON
+          },
+        });
+        console.log("res", response)
+  
+      } catch (error) {
+        // Error handling
+        console.error("Error:", error);
+      }
+      console.log(`Share file with ID: ${fileId}`);
+    };
 
   const columnspdforexcelBackend = [
     {
@@ -314,7 +350,7 @@ const UploadPage = () => {
           <Button type="link" onClick={() => handleDownloadBackend(record)}>
             Download
           </Button>
-          <Button type="link" onClick={() => handleShare(record._id)}>
+          <Button type="link" onClick={() => handleShareGenerateMail(record._id)}>
             Share
           </Button>
           <Button type="link" danger onClick={() => handleDelete(record._id)}>
